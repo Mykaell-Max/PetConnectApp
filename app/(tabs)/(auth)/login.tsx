@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native';
 
-export default function Register() {
+export default function Login() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>LOGIN AQUI</Text>

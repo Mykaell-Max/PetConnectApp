@@ -1,9 +1,9 @@
 import { Text, View, StyleSheet } from 'react-native';
 
-export default function chatsPreview() {
+export default function editProfile() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>VAI TER UNS CHATS BOLADOS AQUI</Text>
+      <Text style={styles.text}>VAI COMO EDITAR A PORRA DO PERFIL AQUI</Text>
     </View>
   );
 }
