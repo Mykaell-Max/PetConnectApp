@@ -15,10 +15,14 @@ export default function TabLayout() {
         },
       }}
     >
+      
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
-      <Tabs.Screen name="(chat)/chatsPreview" options={{ title: 'Chats' }} />
+      <Tabs.Screen name="(chat)" options={{ title: 'Chats' }} />
       <Tabs.Screen name="(user)" options={{ title: 'Profile' }} />
+      <Tabs.Screen name="settings" options={{ title: 'Settings' }} />
 
+      <Tabs.Screen name="(pets)" options={{ title: 'Profile', href: null }} />
+      
       <Tabs.Screen name="(auth)/login" options={{ title: 'Login', href: null }} />
       <Tabs.Screen name="(auth)/register" options={{ title: 'Register', href: null }} />
 

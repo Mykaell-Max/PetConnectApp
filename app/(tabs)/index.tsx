@@ -13,6 +13,11 @@ export default function homeScreen() {
       <Link href="/(auth)/login" style={styles.button}>
         login screen
       </Link>
+
+      <Link href="/(pets)/petDetail" style={styles.button}>
+        pet screen
+      </Link>
+
     </View>
   );
 }
