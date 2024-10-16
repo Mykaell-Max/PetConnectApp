@@ -1,21 +1,10 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
+import commonStyles from '../../styles/commonStyles';
 
 export default function Settings() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>TELA DE CONFIGS DO APP</Text>
+    <View style={commonStyles.container}>
+      <Text style={commonStyles.text}>TELA DE CONFIGS DO APP</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: '#fff',
-  },
-});

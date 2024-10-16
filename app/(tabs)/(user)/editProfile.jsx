@@ -1,21 +1,10 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
+import commonStyles from '../../../styles/commonStyles';
 
 export default function editProfile() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>VAI COMO EDITAR A PORRA DO PERFIL AQUI</Text>
+    <View style={commonStyles.container}>
+      <Text style={commonStyles.text}>VAI COMO EDITAR A PORRA DO PERFIL AQUI</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: '#fff',
-  },
-});
