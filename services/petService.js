@@ -8,3 +8,12 @@ export const fetchPets = async () => {
         throw error
     }
 };
+
+export const fetchSinglePet = async (petId) => {
+    try {
+        const response = await api.get(`/pets/${petId}`);
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}

@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import colors from '../../styles/colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function TabLayout() {
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
@@ -28,7 +28,7 @@ export default function TabLayout() {
       }}
     >
       
-      <Tabs.Screen name="index" options={{ title: 'Início',
+      <Tabs.Screen name="(pets)" options={{ title: 'Início',
         tabBarIcon: ({ color, focused }) => (
           <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
         ),
@@ -51,8 +51,6 @@ export default function TabLayout() {
           <Ionicons name={focused ? 'settings-sharp' : 'settings-outline'} color={color} size={24} />
         ),
       }}/>
-      
-      <Tabs.Screen name="(pets)" options={{ title: 'Pets', href: null }} />
       
       <Tabs.Screen name="(auth)/login" options={{ title: 'Login', href: null }} />
       <Tabs.Screen name="(auth)/register" options={{ title: 'Register', href: null }} />

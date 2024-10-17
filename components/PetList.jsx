@@ -8,7 +8,7 @@ export default function PetList({ pets }) {
     <View style={styles.listContainer}>
       <FlatList
         data={pets}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <PetCard pet={item} />}
         numColumns={2}
         columnWrapperStyle={styles.row}

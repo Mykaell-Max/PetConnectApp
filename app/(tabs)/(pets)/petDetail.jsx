@@ -1,20 +1,14 @@
-import { Text, View } from 'react-native';
-import { Link } from 'expo-router';
-import commonStyles from '../../../styles/commonStyles';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
+import { useLocalSearchParams } from 'expo-router'; 
 
-export default function petDetail() {
-  return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.text}>TELA PARA EXIBIÇÃO MAIS DETALHADA DE UM PET</Text>
+export default function PetDetail() {
+    const { petId } = useLocalSearchParams();
+    
 
-      <Link href="/editPet" style={commonStyles.button}>
-        edit pet
-      </Link>
-
-      <Link href="/registerPet" style={commonStyles.button}>
-        add pet
-      </Link>
-
-    </View>
-  );
+    return (
+        <View>
+            <Text>Olá {petId}</Text>
+        </View>
+    );
 }

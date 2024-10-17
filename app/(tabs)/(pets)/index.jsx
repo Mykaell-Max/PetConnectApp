@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import commonStyles from '../../styles/commonStyles';
-import { fetchPets } from '../../services/petService';
-import PetList from '../../components/PetList';
-import BlackButton from '../../components/BlackButton';
+import commonStyles from '../../../styles/commonStyles';
+import { fetchPets } from '../../../services/petService';
+import PetList from '../../../components/PetList';
+import BlackButton from '../../../components/BlackButton';
 import * as Font from 'expo-font';
-import colors from '../../styles/colors';
+import colors from '../../../styles/colors';
 
 
 export default function HomeScreen() {
@@ -18,7 +18,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'SchoolBell': require('../../assets/fonts/Schoolbell-Regular.ttf'), 
+        'SchoolBell': require('../../../assets/fonts/Schoolbell-Regular.ttf'), 
       });
       setFontsLoaded(true); 
     };
