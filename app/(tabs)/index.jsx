@@ -3,6 +3,7 @@ import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
 import commonStyles from '../../styles/commonStyles';
 import { fetchPets } from '../../services/petService';
+import PetList from '../../components/PetList';
 
 
 export default function HomeScreen() {
@@ -35,15 +36,6 @@ export default function HomeScreen() {
 
   return (
     <View style={commonStyles.container}>
-      <Text style={commonStyles.text}>AQUI É A PAGINA PRINCIPAL DO APLICATIVO, OS ANIMAL VAI FICAR LISTADO AQUI</Text>
-
-      <FlatList 
-        data={pets}
-        renderItem={({ item }) => (
-          <Text>{item.name} = {item.about}</Text>
-        )}
-      />
-
       <Link href="/(auth)/register" style={commonStyles.button}>
         register screen
       </Link>
@@ -56,6 +48,7 @@ export default function HomeScreen() {
         pet screen
       </Link>
 
+      <PetList pets={pets} />
     </View>
   );
 }
