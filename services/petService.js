@@ -17,3 +17,25 @@ export const fetchSinglePet = async (petId) => {
         throw error
     }
 }
+
+export const createPet = async (petData, pictures) => {
+    try {
+        const formData = new FormData();
+        
+        formData.append('petData', JSON.stringify(petData));
+        
+        pictures.forEach((picture) => {
+            formData.append('petPictures', picture);
+        });
+
+        const response = await api.post('/pets/register', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
