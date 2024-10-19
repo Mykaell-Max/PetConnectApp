@@ -1,24 +1,30 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, ActivityIndicator, View  } from 'react-native';
 import colors from '../styles/colors';
 
-export default function BlackButton({ text, onPress }) {
+export default function BlackButton({ text, onPress, disabled, loading }) {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{text}</Text>
-    </TouchableOpacity>
+  <TouchableOpacity onPress={onPress} disabled={disabled}>
+      <View style={[styles.button, disabled && styles.disabled]}>
+          {loading ? (
+              <ActivityIndicator size="small" color={colors.yellow} />
+          ) : (
+              <Text style={styles.buttonText}>{text}</Text>
+          )}
+      </View>
+  </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.black, // Cor de fundo preta
-    borderRadius: 50, // Para torná-lo redondo
-    paddingVertical: 12, // Altura do botão
-    paddingHorizontal: 20, // Margem horizontal em relação ao texto
-    alignItems: 'center', // Centraliza o texto
-    justifyContent: 'center', // Centraliza o texto
-    alignSelf: 'center', // Faz com que o botão ocupe apenas o espaço do texto
+    backgroundColor: colors.black, 
+    borderRadius: 50, 
+    paddingVertical: 12, 
+    paddingHorizontal: 20, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    alignSelf: 'center', 
     elevation: 20,
     shadowColor: colors.black, 
     shadowOffset: { width: 2, height: 2 },
@@ -26,8 +32,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   buttonText: {
-    color: colors.yellow, // Cor do texto amarela
-    fontFamily: 'SchoolBell', // Usando a fonte SchoolBell
-    fontSize: 18, // Tamanho da fonte (ajuste conforme necessário)
+    color: colors.yellow,
+    fontFamily: 'SchoolBell', 
+    fontSize: 18, 
   },
+  disabled: {
+    opacity: 0.5,
+},
 });

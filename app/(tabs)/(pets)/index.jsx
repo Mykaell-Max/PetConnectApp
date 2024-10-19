@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
 import { Link } from 'expo-router';
 import commonStyles from '../../../styles/commonStyles';
 import { fetchPets } from '../../../services/petService';
@@ -13,7 +14,13 @@ export default function HomeScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [pets, setPets] = useState([]); 
   const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
+
+  const navigation = useNavigation();
+
+  const goToPetRegister = () => {
+    navigation.navigate('registerPet');  
+  };
   
   useEffect(() => {
     const loadFonts = async () => {
@@ -62,14 +69,14 @@ export default function HomeScreen() {
   }
 
   return (
-    <View style={commonStyles.container}>
+    <SafeAreaView style={commonStyles.container}>
       <Text style={commonStyles.BigText}>Junte-se à nossa comunidade:</Text>
 
-      <BlackButton text='Doe animais!'/>
+      <BlackButton text='Doe animais!' onPress={goToPetRegister}/>
 
       <Text style={commonStyles.BigText}>Animais esperando um lar:</Text>
 
       <PetList pets={pets} />
-    </View>
+    </SafeAreaView>
   );
 }
