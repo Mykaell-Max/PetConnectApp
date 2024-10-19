@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginVertical: 10,
+    marginBottom: 0,
+    paddingBottom: 0
   },
   row: {
     justifyContent: 'space-between', 

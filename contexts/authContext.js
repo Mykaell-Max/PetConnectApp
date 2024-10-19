@@ -12,9 +12,11 @@ export const AuthProvider = ({ children }) => {
     const checkToken = async () => {
       try {
         const storedToken = await AsyncStorage.getItem('userToken');
-        if (storedToken) {
+        const storedId = await AsyncStorage.getItem('userId');
+        if (storedToken && storedId) {
           setIsLoggedIn(true);
           setToken(storedToken);
+          setId(storedId);
         }
       } catch (error) {
         console.error('Error reading token from AsyncStorage:', error);
