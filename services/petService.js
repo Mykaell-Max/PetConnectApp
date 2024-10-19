@@ -20,7 +20,7 @@ export const fetchSinglePet = async (petId) => {
 
 export const createPet = async (petData, pictures) => {
     try {
-        const formData = new FormData();
+        const formData = new FormData();    
         
         formData.append('petData', JSON.stringify(petData));
         

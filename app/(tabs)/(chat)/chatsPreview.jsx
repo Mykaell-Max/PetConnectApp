@@ -11,7 +11,6 @@ export default function chatsPreview() {
     return <NotLogged />;
   }
 
-  
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.text}>VAI TER UNS CHATS BOLADOS AQUI</Text>
