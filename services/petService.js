@@ -1,8 +1,8 @@
 import api from './api';
 
-export const fetchPets = async () => {
+export const fetchPets = async (query = '') => {
     try {
-        const response = await api.get('/pets/searchAll');
+        const response = await api.get(`/pets/searchAll${query ? `?${query}` : ''}`);
         return response.data;
     } catch (error) {   
         throw error

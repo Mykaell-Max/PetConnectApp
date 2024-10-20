@@ -39,6 +39,7 @@ export default function HomeScreen() {
         const data = await fetchPets(); 
         setPets(data); 
       } catch (error) {
+        console.log(error)
         setError('Erro ao buscar pets'); 
       } finally {
         setLoading(false); 

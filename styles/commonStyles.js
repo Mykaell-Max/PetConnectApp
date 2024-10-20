@@ -18,7 +18,8 @@ const commonStyles = StyleSheet.create({
       fontSize: 20,
       textDecorationLine: 'underline',
       color: colors.black,
-      fontFamily: 'SchoolBell'
+      fontFamily: 'SchoolBell',
+      marginBottom: 10
     },
     BigText: {
       fontFamily: 'SchoolBell',
