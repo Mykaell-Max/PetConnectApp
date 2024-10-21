@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useAuth } from '../../../contexts/authContext';
 import * as ImagePicker from 'expo-image-picker';
-import { fetchSingleUser, updateUser, uploadProfilePicture } from '../../../services/userService'; // Função para buscar e atualizar usuário
+import { fetchSingleUser, updateUser, uploadProfilePicture, deleteUser, deleteProfilePicture } from '../../../services/userService'; // Função para buscar e atualizar usuário
 import colors from '../../../styles/colors';
 import commonStyles from '../../../styles/commonStyles';
 import BlackButton from '../../../components/BlackButton';
 import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
-export default function EditUserProfile({ navigation }) {
+export default function EditUserProfile() {
   const router = useRouter();
-  const { userId } = useAuth();
+  const { userId, logout } = useAuth();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profilePicture, setProfilePicture] = useState(null);
@@ -26,6 +27,12 @@ export default function EditUserProfile({ navigation }) {
     neighborhood: '',
     socialMedias: '',
   });
+
+  const navigation = useNavigation();
+
+  const goToMainPage = () => {
+    navigation.navigate('index');  
+  };
 
   useEffect(() => {
     const loadUser = async (userId) => {
@@ -127,6 +134,30 @@ export default function EditUserProfile({ navigation }) {
       Alert.alert('Erro', 'Erro ao atualizar perfil.');
     }
   };
+
+  const handleDeleteUser = async () => {
+    try {
+      setLoading(true);
+      await deleteUser(userId);
+      logout()
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao apagar o perfil');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleDeletProfilePicture = async () => {
+    try {
+      setLoading(true);
+      await deleteProfilePicture(userId);
+      Alert.alert('Sucesso', 'Foto de perfil deletada!');
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao apagar o perfil');
+    } finally {
+      setLoading(false);
+    }
+  }
   
   return (
     <SafeAreaView style={styles.container}>
@@ -144,6 +175,8 @@ export default function EditUserProfile({ navigation }) {
         />
         <Text style={styles.changePictureText}>Alterar Imagem de Perfil</Text>
       </TouchableOpacity>
+
+      <BlackButton text="Deletar Foto de Perfil" onPress={handleDeletProfilePicture} color={colors.yellow} loading={loading} disabled={loading} />
 
       <Text style={styles.label}>Nome:</Text>
       <TextInput
@@ -197,6 +230,8 @@ export default function EditUserProfile({ navigation }) {
       />
 
       <BlackButton text="Salvar Alterações" onPress={handleSubmit} color={colors.yellow} loading={loading} disabled={loading} />
+
+      <BlackButton text="Deletar Usuário" onPress={handleDeleteUser} color={colors.yellow} loading={loading} disabled={loading} />
     </ScrollView>
     </SafeAreaView>
   );
