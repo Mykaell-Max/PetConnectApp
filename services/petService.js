@@ -40,6 +40,41 @@ export const createPet = async (petData, pictures) => {
     }
 };
 
+export const updatePet = async (petId, data, newPictures = []) => {
+    try {
+        const response = await api.patch(`/pets/${petId}`, data);
+        if (newPictures.length > 0) {
+            
+            const formData = new FormData();    
+        
+            formData.append('petPictures', JSON.stringify(newPictures));
+            
+            newPictures.forEach((picture) => {
+                formData.append('petPictures', picture);
+            });
+            
+            await api.post(`/pets/${petId}/picture`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+        } 
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+}
+
+export const deletePet = async (petId, data) => {
+    try {
+        const response = await api.delete(`/pets/${petId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const addAdoptionRequest = async (petId, userId) => {
     try {
         const response = await api.patch(`/pets/${petId}/adoption-request`, { adopterId: userId });
@@ -53,6 +88,17 @@ export const removeAdoptionRequest = async (petId, userId) => {
     try {
         const response = await api.delete(`/pets/${petId}/adoption-request`, {
             params: { adopterId: userId }  
+        });
+        return response
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deletePetPicture = async (petId, pictureUrl) => {
+    try {
+        const response = await api.delete(`/pets/${petId}/picture`, {
+            params: { pictureUrl: pictureUrl }  
         });
         return response
     } catch (error) {

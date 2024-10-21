@@ -1,25 +1,33 @@
-import { Text, View } from 'react-native';
+import { Text, View, TextInput, ActivityIndicator, StyleSheet, ScrollView, SafeAreaView, Alert, Switch, Image, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import commonStyles from '../../../styles/commonStyles';
 import { useLocalSearchParams } from 'expo-router'; 
-import { fetchSinglePet } from '../../../services/petService';
+import { fetchSinglePet, updatePet, deletePet, deletePetPicture} from '../../../services/petService';
+import colors from '../../../styles/colors';
+import BlackButton from '../../../components/BlackButton';
+import { useAuth } from '../../../contexts/authContext';
+import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
-export default function editPet() {
+export default function EditPet() {
   const { petId } = useLocalSearchParams();
-  const [pet, setPet] = useState([]); 
+  // const { userId } = useAuth();
+  const [pet, setPet] = useState({}); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
+  const [newPictures, setNewPictures] = useState([]);
+  
+  const navigation = useNavigation();
+
+  const goToMainPage = () => {
+    navigation.navigate('index');  
+  };
 
   useEffect(() => {
     const loadPet = async (petId) => {
         try {
             const data = await fetchSinglePet(petId);
             setPet(data); 
-            if (data.adoptionRequests.includes(userId)) {
-                setHasRequested(true);  
-            } else {
-                setHasRequested(false); 
-            }
         } catch (error) {
             setError(`Erro ao buscar pet: ${error.message}`)
         } finally {
@@ -28,11 +36,263 @@ export default function editPet() {
     }
 
     loadPet(petId);
-}, []);
+  }, []);
+
+  const createFileFromUri = async (image) => {
+    try {
+      const response = await fetch(image.uri); 
+      const blob = await response.blob(); 
+      return {
+        uri: image.uri,
+        name: image.fileName, 
+        type: image.mimeType, 
+        blob: blob
+      };  
+    } catch (error) {
+        throw error;
+    } 
+  };
+
+  const handleUpdatePet = async () => {
+    setLoading(true);
+    try {
+        if (newPictures.length > 0){
+          const pictureFiles = await Promise.all(newPictures.map(async (picture) => {
+            return await createFileFromUri(picture); 
+          }));
+          await updatePet(petId, pet, pictureFiles);  
+          Alert.alert('Sucesso', 'Informações do pet atualizadas com sucesso!');
+        } else {
+          await updatePet(petId, pet);
+          Alert.alert('Sucesso', 'Informações do pet atualizadas com sucesso!');
+        }
+    } catch (error) {
+        Alert.alert('Erro', `Erro ao atualizar pet: ${error.message}`);
+    } finally {
+        setLoading(false);
+    }
+  }
+
+  const handleDeletePet = async () => {
+    setLoading(true);
+    try {
+      await deletePet(petId);
+      Alert.alert('Sucesso', 'Pet deletado com sucesso!')
+      goToMainPage();
+    } catch (error) {
+      Alert.alert('Erro', `Erro ao deletar pet: ${error.message}`);
+    }
+  }
+
+  const handleRemovePicture = async (picture) => {
+    const pictureUrl = typeof picture === 'string' ? picture : picture.uri;
+    const isImageInDB = pet.pictures.includes(pictureUrl);
+    try {
+        if (isImageInDB) {
+            await deletePetPicture(petId, pictureUrl); 
+            setPet((prevPet) => ({
+              ...prevPet,
+              pictures: prevPet.pictures.filter((img) => img !== pictureUrl),
+            }));
+        }
+        setNewPictures((prevPictures) => prevPictures.filter((img) => img.uri !== pictureUrl));
+        Alert.alert('Sucesso', 'Imagem removida com sucesso!');
+    } catch (error) {
+        Alert.alert('Erro', `Erro ao remover imagem: ${error.message}`);
+    }
+    
+  };
+
+
+  const handleSelectPictures = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Precisamos de permissão para acessar sua galeria');
+        return;
+      }
+  
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaType: 'photo',
+        allowsMultipleSelection: true,
+        selectionLimit: 5 - pet.pictures.length,  
+        quality: 1,
+      });
+  
+      if (result.canceled) {
+        return;
+      }
+
+      if (result.assets && result.assets.length > 0) {
+        setNewPictures((prevPictures) => [...prevPictures, ...result.assets]);
+      } else {
+        console.log('Nenhuma imagem foi selecionada');
+      }
+    } catch (error) {
+      console.log('Erro ao selecionar imagens:', error);
+    }
+  };
+
+  if (loading) {
+      return (
+          <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.yellow} /> 
+          </View>
+      ); 
+  }
+
+  if (error) {
+      return <Text style={styles.errorText}>{error}</Text>;
+  }
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.text}>TELA PARA EDITAR INFORMAÇÕES DE UM PET {petId}</Text>
-    </View>
+      <SafeAreaView style={styles.container}>
+          <ScrollView nestedScrollEnabled={true}>
+              <View style={styles.detailsContainer}>
+                  <Text style={styles.label}>Nome:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.name}
+                      onChangeText={(text) => setPet({ ...pet, name: text })}
+                  />
+                  <Text style={styles.label}>Idade:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={String(pet.age)}
+                      onChangeText={(text) => setPet({ ...pet, age: text   })}
+                      // keyboardType="numeric"
+                  />
+                  <Text style={styles.label}>Espécie:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.petSpecie}
+                      onChangeText={(text) => setPet({ ...pet, petSpecie: text })}
+                  />
+                  <Text style={styles.label}>Tamanho:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.size}
+                      onChangeText={(text) => setPet({ ...pet, size: text })}
+                  />
+                  <Text style={styles.label}>Sexo:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.sex}
+                      onChangeText={(text) => setPet({ ...pet, sex: text })}
+                  />
+                  
+                  <Text style={styles.label}>Castrado:</Text>
+                  <Switch 
+                      value={pet.neutered} 
+                      onValueChange={(value) => setPet({ ...pet, neutered: value })}
+                      trackColor={{ false: colors.gray, true: colors.green }}
+                      thumbColor={pet.neutered ? colors.white : colors.lightGray}
+                  />
+
+                  <Text style={styles.label}>Sobre:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.about}
+                      onChangeText={(text) => setPet({ ...pet, about: text })}
+                      multiline
+                      numberOfLines={4}
+                  />
+                  <Text style={styles.label}>Local atual:</Text>
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.address?.neighborhood}
+                      onChangeText={(text) => setPet({ ...pet, address: { ...pet.address, neighborhood: text } })}
+                  />
+                  <TextInput 
+                      style={styles.input}
+                      value={pet.address?.city}
+                      onChangeText={(text) => setPet({ ...pet, address: { ...pet.address, city: text } })}
+                  />
+              </View>
+
+              <Text style={styles.label}>Imagens:</Text>
+              <View style={styles.picturesContainer}>
+                  {pet.pictures.map((picture, index) => (
+                      <View key={index} style={styles.pictureWrapper}>
+                        <Image source={{ uri: picture }} style={styles.picture} />
+                        <BlackButton text="Remover" onPress={() => handleRemovePicture(picture)} />
+                      </View>
+                  ))}
+
+                  {newPictures.map((picture, index) => (
+                      <View key={index} style={styles.pictureWrapper}>
+                        <Image source={{ uri: picture.uri }} style={styles.picture} />
+                        <BlackButton text="Remover" onPress={() => handleRemovePicture(picture)} />
+                      </View>
+                  ))}
+              </View>
+              
+              <BlackButton text="Adicionar Imagens" onPress={handleSelectPictures} />
+
+              <BlackButton text={'Salvar'} onPress={handleUpdatePet} loading={loading} disabled={loading} />
+
+              <BlackButton text={'Deleter pet'} onPress={handleDeletePet} loading={loading} disabled={loading} />
+
+          </ScrollView> 
+      </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.black,
+  },
+  errorText: {
+      color: colors.red,
+      fontSize: 18,
+      textAlign: 'center',
+      marginTop: 20,
+  },
+  container: {
+      padding: 14,
+      backgroundColor: colors.lightBackground,
+  },
+  detailsContainer: {
+      padding: 16,
+      backgroundColor: colors.white,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      marginVertical: 20,
+  },
+  label: {
+      fontSize: 18,
+      fontFamily: 'SchoolBell',
+      color: colors.textDark,
+      marginVertical: 4,
+  },
+  input: {
+      height: 40,
+      borderColor: colors.gray,
+      borderWidth: 1,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      marginBottom: 10,
+      fontSize: 16,
+  },
+  picturesContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginVertical: 10,
+  },
+  pictureWrapper: {
+      position: 'relative',
+      margin: 5,
+  },
+  picture: {
+      width: 100,
+      height: 100,
+      borderRadius: 10,
+  },
+});

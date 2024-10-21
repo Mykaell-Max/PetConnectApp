@@ -98,6 +98,7 @@ export default function PetDetail() {
                 <Text style={styles.petDetail}>Espécie: {pet.petSpecie}</Text>
                 <Text style={styles.petDetail}>Tamanho: {pet.size}</Text>
                 <Text style={styles.petDetail}>Sexo: {pet.sex}</Text>
+                <Text style={styles.petDetail}>Castrado: {pet.neutered ? 'Sim' : 'Não'}</Text>
                 <Text style={styles.petAbout}>Sobre: {pet.about}</Text>
                 <Text style={styles.petAbout}>Local atual: {pet.address.neighborhood}, {pet.address.city} </Text>
                 {pet.healthIssues && (

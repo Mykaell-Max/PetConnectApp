@@ -43,4 +43,22 @@ export async function uploadProfilePicture(userId, picfile) {
     } catch (error) {
         throw error;
     }
-  }
+}
+
+export async function deleteProfilePicture(userId) {
+    try {
+        const response = await api.delete(`/users/${userId}/profilePic`)
+        return response
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function deleteUser(userId) {
+    try {
+        const response = await api.delete(`/users/${userId}`)
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
