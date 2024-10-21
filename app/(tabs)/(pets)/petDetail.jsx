@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
 import { useLocalSearchParams } from 'expo-router'; 
-import { fetchSinglePet } from '../../../services/petService';
+import { fetchSinglePet, addAdoptionRequest, removeAdoptionRequest } from '../../../services/petService';
 import colors from '../../../styles/colors';
 import commonsStyles from '../../../styles/commonStyles';
 import PetCarousel from '../../../components/petCarousel';
+import BlackButton from '../../../components/BlackButton';
+import { useAuth } from '../../../contexts/authContext';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PetDetail() {
     const { petId } = useLocalSearchParams();
-
+    const { userId } = useAuth();
     const [pet, setPet] = useState([]); 
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
+    const [hasRequested, setHasRequested] = useState(false);
+
+    const navigation = useNavigation();
+
+    const goToEditPet = () => {
+      navigation.navigate('editPet', {petId: petId});  
+    };
 
     useEffect(() => {
         const loadPet = async (petId) => {
             try {
                 const data = await fetchSinglePet(petId);
                 setPet(data); 
+                if (data.adoptionRequests.includes(userId)) {
+                    setHasRequested(true);  
+                } else {
+                    setHasRequested(false); 
+                }
             } catch (error) {
-                setError('Erro ao buscar pet.')
+                setError(`Erro ao buscar pet: ${error.message}`)
             } finally {
                 setLoading(false);
             }
@@ -27,6 +42,39 @@ export default function PetDetail() {
 
         loadPet(petId);
     }, []);
+
+    const handleAddAdoptionRequest = async () => {
+        setLoading(true);
+        try {
+            await addAdoptionRequest(petId, userId);
+            Alert.alert('Sucesso', 'Pedido de adoção enviado com sucesso!')
+            setHasRequested(true);
+            setLoading(false);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                Alert.alert('Erro', 'Você não pode adotar o próprio pet.');
+            } else {
+                Alert.alert('Erro', `Error: ${error.message}`);
+            }
+            const updatedPet = await fetchSinglePet(petId);
+            setPet(updatedPet);
+            setLoading(false);
+        }
+    }
+
+    const handleRemoveAdoptionRequest = async () => {
+        setLoading(true);
+        try {
+            await removeAdoptionRequest(petId, userId);
+            Alert.alert('Sucesso', 'Pedido de adoção removido com sucesso!')
+            setHasRequested(false);
+            setLoading(false);
+        } catch (error) {
+            Alert.alert('Error', `Error: ${error.message}`)
+            setLoading(false);
+        }
+    }
+
 
     if (loading) {
         return (
@@ -41,7 +89,8 @@ export default function PetDetail() {
     }
 
     return (
-        <ScrollView style={styles.container}  nestedScrollEnabled={true}>
+        <SafeAreaView style={styles.container}>
+        <ScrollView   nestedScrollEnabled={true}>
             <PetCarousel petImages={pet.pictures} />
             <View style={styles.detailsContainer}>
                 <Text style={styles.petName}>{pet.name}</Text>
@@ -57,7 +106,19 @@ export default function PetDetail() {
                     </Text>
                 )}
             </View>
+            
+            {hasRequested ? (
+                <BlackButton text={'Remover solicitação'} onPress={handleRemoveAdoptionRequest} loading={loading} disabled={loading}/>
+            ) : (
+                <BlackButton text={'Solicitar adoção'} onPress={handleAddAdoptionRequest} loading={loading} disabled={loading}/>
+            )}
+            {/* <BlackButton text={'Solicitar adoção'} onPress={handleAddAdoptionRequest} loading={loading} disabled={loading}/> */}
+
+            {(String(userId) === String(pet.donor)) ? (
+                <BlackButton text={'Editar pet'} onPress={goToEditPet}/>
+            ) : null}
         </ScrollView> 
+        </SafeAreaView>
     );
 }
 

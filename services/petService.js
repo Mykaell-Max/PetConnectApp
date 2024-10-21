@@ -39,3 +39,23 @@ export const createPet = async (petData, pictures) => {
         throw error;
     }
 };
+
+export const addAdoptionRequest = async (petId, userId) => {
+    try {
+        const response = await api.patch(`/pets/${petId}/adoption-request`, { adopterId: userId });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const removeAdoptionRequest = async (petId, userId) => {
+    try {
+        const response = await api.delete(`/pets/${petId}/adoption-request`, {
+            params: { adopterId: userId }  
+        });
+        return response
+    } catch (error) {
+        throw error;
+    }
+};

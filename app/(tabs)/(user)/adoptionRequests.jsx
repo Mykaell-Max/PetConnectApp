@@ -12,6 +12,8 @@ export default function adoptionRequests() {
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
 
+    
+
     useEffect(() => {
         const loadPets = async () => {  
           try {
@@ -35,7 +37,7 @@ export default function adoptionRequests() {
           </View>
         ); 
     }
-
+    
     if (error) {
         return (
             <View style={styles.container}>
