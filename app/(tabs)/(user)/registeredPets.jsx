@@ -5,12 +5,20 @@ import { fetchPets } from '../../../services/petService';
 import { useAuth } from '../../../contexts/authContext';
 import PetList from '../../../components/PetList';
 import commonStyles from '../../../styles/commonStyles';
+import BlackButton from '../../../components/BlackButton';
+import { useNavigation } from '@react-navigation/native';
 
 export default function RegisteredPets() {
     const { userId } = useAuth();  
     const [pets, setPets] = useState([]); 
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
+
+    const navigation = useNavigation();
+
+    const goToPetRegister = () => {
+      navigation.navigate('registerPet');  
+    };
 
     useEffect(() => {
         const loadPets = async () => {  
@@ -48,6 +56,7 @@ export default function RegisteredPets() {
         <SafeAreaView style={styles.container}>
             <Text style={commonStyles.BigText}>Seus animais registrados:</Text>
             <PetList pets={pets} />
+            <BlackButton text={"Registrar novo pet"} onPress={goToPetRegister}/>
         </SafeAreaView>
     );
 }
