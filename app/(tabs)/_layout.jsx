@@ -1,29 +1,31 @@
 import { Tabs } from 'expo-router';
-import { Image } from 'react-native';
+import { Image, StatusBar } from 'react-native';
 import colors from '../../styles/colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabsLayout() {
   return (
+    <>
+    <StatusBar barStyle="dark-content" />
+
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.yellow,
-        tabBarInactiveTintColor: colors.white,
+        tabBarActiveTintColor: colors.black,
+        tabBarInactiveTintColor: colors.black,
         headerStyle: {
-          backgroundColor: colors.black
+          backgroundColor: colors.white
         },
         headerTitle: () => (
           <Image
-            source={require('../../assets/images/logo_y.png')}
+            source={require('../../assets/images/logo_w.png')}
             style={{ width: 140, height: 80 }}
             resizeMode="contain"
           />
         ),
         headerTitleAlign: 'center',
         headerShadowVisible: false,
-        headerTintColor: colors.yellow,
         tabBarStyle: {
-          backgroundColor: colors.black,
+          backgroundColor: colors.white,
         },
       }}
     >
@@ -56,5 +58,6 @@ export default function TabsLayout() {
       <Tabs.Screen name="(auth)/register" options={{ title: 'Register', href: null }} />
 
     </Tabs>
+    </>
   );
 }

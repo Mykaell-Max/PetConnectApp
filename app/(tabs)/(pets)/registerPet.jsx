@@ -59,6 +59,8 @@ export default function RegisterPet () {
         allowsMultipleSelection: true,
         selectionLimit: 5,  
         quality: 1,
+        allowsEditing: true,
+        aspect: [1, 1],
       });
   
       if (result.canceled) {

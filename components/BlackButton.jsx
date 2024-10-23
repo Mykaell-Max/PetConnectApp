@@ -18,7 +18,7 @@ export default function BlackButton({ text, onPress, disabled, loading }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.black, 
+    backgroundColor: colors.white, 
     borderRadius: 50, 
     paddingVertical: 12, 
     paddingHorizontal: 20, 
@@ -30,9 +30,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    margin: 10,
+    borderWidth: 0.5,
   },
   buttonText: {
-    color: colors.yellow,
+    color: colors.black,
     fontFamily: 'SchoolBell', 
     fontSize: 18, 
   },

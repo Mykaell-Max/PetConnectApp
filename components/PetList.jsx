@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
+
 import PetCard from './PetCard';
-import colors from '../styles/colors';
 
 export default function PetList({ pets }) {
   return (
@@ -20,13 +20,8 @@ export default function PetList({ pets }) {
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    marginVertical: 10,
-    marginBottom: 0,
-    paddingBottom: 0
   },
-  row: {
-    justifyContent: 'space-between', 
+  row: { 
+    justifyContent: 'space-around',
   },
 });
