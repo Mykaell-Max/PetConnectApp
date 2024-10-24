@@ -18,7 +18,8 @@ const commonStyles = StyleSheet.create({
   text: {
     color: colors.black,
     textAlign: 'center',
-    fontFamily: 'SchoolBell'
+    fontFamily: 'SchoolBell',
+    fontSize: 20
   },
   button: {
     fontSize: 20,
@@ -34,7 +35,30 @@ const commonStyles = StyleSheet.create({
     fontSize: 25,
     color: colors.black,
     textDecorationLine: 'underline'
-},
+  },
+  linkText: {
+    fontSize: 20,
+    color: '#1E90FF',
+    marginTop: 5,
+    textAlign: 'center',
+    fontFamily: 'SchoolBell'
+  },
+  inputContainer: {
+    marginVertical: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 5,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: '#fff',
+  },
 });
 
 export default commonStyles;

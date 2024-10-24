@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, Alert} from 'react-native';
+import { Text, View, TextInput, Alert, SafeAreaView} from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import commonStyles from '../../../styles/commonStyles';
 import BlackButton from '../../../components/BlackButton';
@@ -20,6 +20,10 @@ export default function Login() {
   }, [isLoggedIn]);
   
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Preencha os campos corretamente.');
+      return;
+    }
     setLoading(true);
     try {
       const { token, userId } = await loginUser(email, password);
@@ -34,33 +38,41 @@ export default function Login() {
   };
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.text}>Faça o login em sua conta</Text>
-          <TextInput
-            style={commonStyles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={commonStyles.input}
-            placeholder="Senha"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-          />
+    <SafeAreaView style={commonStyles.viewSafe}>
+      <Text style={commonStyles.BigText}>Faça o login em sua conta</Text>
 
-          <BlackButton
-            text={loading ? 'Carregando...' : 'Login'}
-            onPress={handleLogin}
-            disabled={loading}
-          />
+      <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Email</Text>
+        <TextInput
+          style={[commonStyles.input]}
+          placeholder="Digite seu email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+      </View>
 
-          <Text>Não possui uma conta?</Text>
-          <Link href='/register'>Registrar</Link>
-    </View>
+      <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Senha</Text>
+        <TextInput
+          style={[commonStyles.input]}
+          placeholder="Digite sua senha"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          autoCapitalize="none"
+        />
+      </View>
+
+      <BlackButton
+        text={loading ? 'Carregando...' : 'Login'}
+        onPress={handleLogin}
+        disabled={loading}
+      />
+
+      <Text style={commonStyles.text}>Não possui uma conta?</Text>
+      <Link href='/register' style={commonStyles.linkText}>Registrar</Link>
+    </SafeAreaView>
   );
 }

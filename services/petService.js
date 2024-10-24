@@ -27,13 +27,13 @@ export const createPet = async (petData, pictures) => {
         pictures.forEach((picture) => {
             formData.append('petPictures', picture);
         });
-
+        console.log('aq')
         const response = await api.post('/pets/register', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-
+        console.log(response.message)
         return response.data;
     } catch (error) {
         throw error;

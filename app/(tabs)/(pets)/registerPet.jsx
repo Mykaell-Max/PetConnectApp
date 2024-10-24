@@ -7,6 +7,7 @@ import BlackButton from '../../../components/BlackButton';
 import { useAuth } from '../../../contexts/authContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NotLogged from '../../../components/NotLogged';
+import commonStyles from '../../../styles/commonStyles';
 
 export default function RegisterPet () {
   const { isLoggedIn, userId} = useAuth();
@@ -119,82 +120,103 @@ export default function RegisterPet () {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.viewSafe}>
       <ScrollView>
-        <Text style={styles.title}>Registre um pet para doar:</Text>
+        <Text style={commonStyles.BigText}>Registre um pet para doar:</Text>
 
-        <Text>Pet Specie:</Text>
-        <TextInput
-            style={styles.input}
-            value={petData.petSpecie}
-            onChangeText={(text) => handleChange('petSpecie', text)}
-        />
-
-        <Text>Name:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Nome</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite o nome do pet"
             value={petData.name}
             onChangeText={(text) => handleChange('name', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Age:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Idade (exata ou aproximada)</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite a idade do pet"
             value={petData.age}
             onChangeText={(text) => handleChange('age', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Size:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Porte</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite o porte do pet"
             value={petData.size}
             onChangeText={(text) => handleChange('size', text)}
-        />
-
-        <Text>Sex:</Text>
-        <TextInput
-            style={styles.input}
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
+        
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Sexo</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite o sexo do pet"
             value={petData.sex}
             onChangeText={(text) => handleChange('sex', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Neutered:</Text>
-        <Switch style={styles.switchContainer}
-            value={petData.neutered}
-            onValueChange={(value) => handleChange('neutered', value)}
-        />
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Castrado: </Text>
+          <Switch style={styles.switchContainer}
+              value={petData.neutered}
+              onValueChange={(value) => handleChange('neutered', value)}
+          />
+        </View>
 
-        <Text>About:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Sobre</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Dê uma breve descrição do pet"
             value={petData.about}
             onChangeText={(text) => handleChange('about', text)}
-            multiline
+            keyboardType="text"
+            autoCapitalize="none"
             numberOfLines={4}
-        />
-
-        <Text>Health Issues:</Text>
-        <TextInput
-            style={styles.input}
-            value={petData.healthIssues}
-            onChangeText={(text) => handleChange('healthIssues', text)}
-        />
-
-        <Text>City:</Text>
-        <TextInput
-            style={styles.input}
+          />
+        </View>
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Cidade</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite a cidade em que o pet se encontra"
             value={petData.address.city}
             onChangeText={(text) => handleAddressChange('city', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Neighborhood:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Bairro</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite o bairro em que o pet se encontra"
             value={petData.address.neighborhood}
             onChangeText={(text) => handleAddressChange('neighborhood', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <BlackButton text='Select Pictures' onPress={handleSelectPictures} />
+        <BlackButton text='Selecionar fotos' onPress={handleSelectPictures} />
 
         <View style={styles.picturesContainer}>
               {pictures.map((picture, index) => (
@@ -205,8 +227,7 @@ export default function RegisterPet () {
               ))}
         </View>
 
-        <BlackButton text='Register Pet' onPress={handleSubmit} loading={loading} disabled={loading} />
-        {/* {message && <Text>{message}</Text>} */}
+        <BlackButton text='Registrar Pet' onPress={handleSubmit} loading={loading} disabled={loading} />
     </ScrollView>
     </SafeAreaView>
   );
@@ -231,12 +252,12 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       borderRadius: 5,
   },
-  switchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-},
+//   switchContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'left',
+//     justifyContent: 'space-between',
+//     marginBottom: 15,
+// },
   picturesContainer: {
     marginTop: 20,
   },

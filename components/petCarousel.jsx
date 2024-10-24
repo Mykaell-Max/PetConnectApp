@@ -9,6 +9,7 @@ export default function PetCarousel({ petImages }) {
 
     return (
         <Carousel
+            style={styles.carousel}
             panGestureHandlerProps={{activeOffsetX: [-10, 10]}}
             pagingEnabled={true}
             loop={false}
@@ -29,8 +30,17 @@ export default function PetCarousel({ petImages }) {
 }
 
 const styles = StyleSheet.create({
+    carousel: {
+        borderWidth: 0.5,
+        width: '100%',
+        borderRadius: 10,
+        marginBottom: 5
+    },
     image: {
+        alignSelf: 'center',
         width: '100%', 
-        height: '100%', 
+        height: '100%',
+        borderWidth: 0.5,
+        borderColor: colors.black,
     },
 });

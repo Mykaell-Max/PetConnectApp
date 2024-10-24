@@ -4,6 +4,7 @@ import { createUser } from '../../../services/userService';
 import { useAuth } from '../../../contexts/authContext';
 import { useRouter } from 'expo-router';
 import BlackButton from '../../../components/BlackButton';
+import commonStyles from '../../../styles/commonStyles';
 
 
 export default function Register() {
@@ -59,95 +60,84 @@ export default function Register() {
   };
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.viewSafe}>
       <ScrollView>
-        <Text style={styles.title}>Registrar novo usuario:</Text>
+        <Text style={commonStyles.BigText}>Registrar novo usuário:</Text>
 
-        <Text>Nome:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Nome</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite seu nome"
             value={userData.name}
             onChangeText={(text) => handleChange('name', text)}
-        />
-
-        <Text>Sobrenome:</Text>
-        <TextInput
-            style={styles.input}
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
+        
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Sobrenome</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite seu sobrenome"
             value={userData.lastName}
             onChangeText={(text) => handleChange('lastName', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Email:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Email</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite seu email"
             value={userData.email}
             onChangeText={(text) => handleChange('email', text)}
-        />
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Senha:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Senha</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite sua senha"
             value={userData.password}
             onChangeText={(text) => handleChange('password', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Cidade:</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Cidade</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite sua cidade"
             value={userData.address.city}
             onChangeText={(text) => handleAddressChange('city', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
-        <Text>Bairro</Text>
-        <TextInput
-            style={styles.input}
+        <View style={commonStyles.inputContainer}>
+        <Text style={commonStyles.label}>Bairro</Text>
+          <TextInput
+            style={[commonStyles.input]}
+            placeholder="Digite seu bairro"
             value={userData.address.neighborhood}
             onChangeText={(text) => handleAddressChange('neighborhood', text)}
-        />
+            keyboardType="text"
+            autoCapitalize="none"
+          />
+        </View>
 
         <BlackButton text='Registrar' onPress={handleRegister} loading={loading} disabled={loading} />
     </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      paddingBottom: 0,
-      padding: 10,
-      backgroundColor: '#fff',
-  },
-  title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
-  },
-  input: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      marginBottom: 15,
-      borderRadius: 5,
-  },
-  switchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-},
-  picturesContainer: {
-    marginTop: 20,
-  },
-  pictureWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  picture: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-    borderRadius: 5,
-},
-});

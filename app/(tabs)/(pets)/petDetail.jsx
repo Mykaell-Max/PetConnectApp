@@ -10,13 +10,13 @@ import PetCarousel from '../../../components/petCarousel';
 import BlackButton from '../../../components/BlackButton';
 import { useAuth } from '../../../contexts/authContext';
 import Loading from '../../../components/Loading';
+import NotLogged from '../../../components/NotLogged';
 
 
 export default function PetDetail() {
     const navigation = useNavigation();
-
     const { petId } = useLocalSearchParams();
-    const { userId } = useAuth();
+    const { userId, isLoggedIn } = useAuth();
 
     const [pet, setPet] = useState([]); 
     const [loading, setLoading] = useState(true); 
@@ -46,6 +46,10 @@ export default function PetDetail() {
       };
 
     const handleAddAdoptionRequest = async () => {
+        if (!isLoggedIn) {
+            Alert.alert('Atenção', 'Você precisa estar logado para solicitar a adoção.');  // Mostra mensagem de não logado
+            return;
+        }
         setLoading(true);
         try {
             await addAdoptionRequest(petId, userId);
@@ -85,60 +89,120 @@ export default function PetDetail() {
     return (
         <SafeAreaView style={commonsStyles.viewSafe}>
 
-        <ScrollView nestedScrollEnabled={true} style={styles.scrolls}>
+            <ScrollView nestedScrollEnabled={true} style={styles.scrolls}>
 
-            {/* <View style={styles.detailsContainer}> */}
+                    <PetCarousel petImages={pet.pictures} style={styles.petImage}/>
 
-                <PetCarousel petImages={pet.pictures} />
-                
-                <Text style={styles.petName}>{pet.name}</Text>
-                <Text style={styles.petDetail}>Idade: {pet.age}</Text>
-                <Text style={styles.petDetail}>Espécie: {pet.petSpecie}</Text>
-                <Text style={styles.petDetail}>Tamanho: {pet.size}</Text>
-                <Text style={styles.petDetail}>Sexo: {pet.sex}</Text>
-                <Text style={styles.petDetail}>Castrado: {pet.neutered ? 'Sim' : 'Não'}</Text>
-                <Text style={styles.petDetail}>Sobre: {pet.about}</Text>
-                <Text style={styles.petDetail}>Local atual: {pet.address.neighborhood}, {pet.address.city} </Text>
-                {pet.healthIssues && (
-                    <Text style={styles.de}>
-                        Problemas de Saúde: {pet.healthIssues.join(', ')}
-                    </Text>
-                )}
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.petName}>{pet.name}</Text>
+                    </View>
 
-            {/* </View> */}
-            
-            {hasRequested ? (
-                <BlackButton text={'Remover solicitação'} onPress={handleRemoveAdoptionRequest} loading={loading} disabled={loading}/>
-            ) : (
-                <BlackButton text={'Solicitar adoção'} onPress={handleAddAdoptionRequest} loading={loading} disabled={loading}/>
-            )}
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.detailTitle}>Idade:</Text>
+                        <Text style={styles.detailValue}>{pet.age}</Text>
+                    </View>
 
-            {(String(userId) === String(pet.donor)) ? (
-                <BlackButton text={'Editar pet'} onPress={goToEditPet}/>
-            ) : null}
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.detailTitle}>Sexo:</Text>
+                        <Text style={styles.detailValue}>{pet.sex}</Text>
+                    </View>
 
-        </ScrollView> 
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.detailTitle}>Porte:</Text>
+                        <Text style={styles.detailValue}>{pet.size}</Text>
+                    </View>
+
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.detailTitle}>Animal Castrado:</Text>
+                        <Text style={styles.detailValue}>{pet.neutered ? 'Sim' : 'Não'}</Text>
+                    </View>
+
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.detailTitle}>Local atual: </Text>
+                        <Text style={styles.detailValue}>{pet.address.neighborhood}, {pet.address.city}</Text>
+                    </View>
+
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.detailTitle}>Descrição:</Text>
+                        <Text style={styles.detailValue}>{pet.about}</Text>
+                    </View>
+
+                    {pet.healthIssues && (
+                        <View style={styles.detailContainer}>
+                            <Text style={styles.detailTitle}>Problemas de saúde:</Text>
+                            <Text style={styles.detailValue}>{pet.healthIssues.join(', ')} </Text>
+                        </View>
+                    )}
+
+                    <View style={styles.buttonContainer}>
+                        {hasRequested ? (
+                            <BlackButton text={'Remover solicitação'} onPress={handleRemoveAdoptionRequest} loading={loading} disabled={loading} style={styles.adoptButton}/>
+                        ) : (
+                            <BlackButton text={'Solicitar adoção'} onPress={handleAddAdoptionRequest} loading={loading} disabled={loading} style={styles.adoptButton}/>
+                        )}
+
+                        {(String(userId) === String(pet.donor)) ? (
+                            <BlackButton text={'Editar pet'} onPress={goToEditPet} style={styles.editButton}/>
+                        ) : null}
+                    </View>
+
+            </ScrollView> 
 
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    scrolls: {
-        backgroundColor: colors.yellow,
-        padding: 4
+    detailContainer: {
+        backgroundColor: colors.blueMedium,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+        flexDirection: 'row',  // Coloca o título e valor na mesma linha
+        // justifyContent: 'space-between',  // Espaça o título e o valor
     },
-    petName: {
-        fontSize: 36,
+    detailTitle: {
+        fontSize: 24,
+        color: colors.black,
         fontFamily: 'SchoolBell',
-        color: colors.primary,
-        textAlign: 'center',
-        marginBottom: 10,
+        textDecorationLine: 'underline',  
+        alignSelf: 'center',// Aplica o sublinhado no título
     },
+    detailValue: {
+        fontSize: 20,
+        color: colors.black,
+        fontFamily: 'SchoolBell',
+        alignSelf: 'center',
+        marginLeft: 5
+    },
+    // detailContainer: {
+    //     backgroundColor: colors.blueMedium,
+    //     borderRadius: 10,
+    //     paddingHorizontal: 5,
+    //     marginVertical: 5,
+    // },
     petDetail: {
-        fontSize: 18,
-        fontFamily: 'SchoolBell',
+        fontSize: 16,
         color: colors.textDark,
+        fontFamily: 'SchoolBell',
+        fontSize: 18,
+        color: colors.black,
         marginVertical: 4,
+    },
+    // petImage: {
+    //     width: 200,  
+    //     height: 200,
+    //     borderRadius: 15,
+    //     marginBottom: 10
+    // },
+    petName: {
+        fontFamily: 'SchoolBell',
+        fontSize: 36,
+        // fontWeight: 'bold',
+        color: '#333333',
+        textAlign: 'center',
+        // marginBottom: 10,
+        textDecorationLine: 'underline'
+        // alignSelf: 'left'
     },
 });
