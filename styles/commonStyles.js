@@ -26,7 +26,8 @@ const commonStyles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: colors.black,
     fontFamily: 'SchoolBell',
-    marginBottom: 10
+    marginBottom: 15,
+    alignSelf: 'center'
   },
   BigText: {
     fontFamily: 'SchoolBell',
@@ -58,6 +59,7 @@ const commonStyles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     backgroundColor: '#fff',
+    flexGrow: 1,
   },
 });
 

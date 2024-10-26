@@ -56,7 +56,7 @@ export default function userProfile() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.viewSafe}>
     <ScrollView >
       <View style={styles.profilePictureContainer}>
         <Image
@@ -69,9 +69,7 @@ export default function userProfile() {
         />
       </View>
 
-      <View style={styles.detailsContainer}>
-        <Text style={styles.headerText}>Perfil de Usuário</Text>
-        
+      <View style={styles.detailsContainer}>      
         <Text style={styles.label}>Nome:</Text>
         <Text style={styles.infoText}>{user.name} {user.lastName}</Text>
 
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     padding: 16,
-    backgroundColor: colors.white,
+    backgroundColor: colors.blueMedium,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

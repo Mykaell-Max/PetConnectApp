@@ -146,70 +146,102 @@ export default function EditPet() {
   }
 
   return (
-      <SafeAreaView style={styles.container}>
-          <ScrollView nestedScrollEnabled={true}>
-              <View style={styles.detailsContainer}>
-                  <Text style={styles.label}>Nome:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.name}
-                      onChangeText={(text) => setPet({ ...pet, name: text })}
-                  />
-                  <Text style={styles.label}>Idade:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={String(pet.age)}
-                      onChangeText={(text) => setPet({ ...pet, age: text   })}
-                      // keyboardType="numeric"
-                  />
-                  <Text style={styles.label}>Espécie:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.petSpecie}
-                      onChangeText={(text) => setPet({ ...pet, petSpecie: text })}
-                  />
-                  <Text style={styles.label}>Tamanho:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.size}
-                      onChangeText={(text) => setPet({ ...pet, size: text })}
-                  />
-                  <Text style={styles.label}>Sexo:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.sex}
-                      onChangeText={(text) => setPet({ ...pet, sex: text })}
-                  />
+      <SafeAreaView style={commonStyles.viewSafe}>
+          <ScrollView>
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Nome</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite o nome do pet"
+                value={pet.name}
+                onChangeText={(text) => setPet({ ...pet, name: text })}
+                keyboardType="text"
+                autoCapitalize="words"
+              />
+            </View>
+
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Idade</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite a idade do pet"
+                value={pet.age}
+                onChangeText={(text) => setPet({ ...pet, age: text })}
+                keyboardType="text"
+                autoCapitalize="words"
+              />
+            </View>
+
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Tamanho</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite o porte do pet"
+                value={pet.size}
+                onChangeText={(text) => setPet({ ...pet, size: text })}
+                keyboardType="text"
+                autoCapitalize="words"
+              />
+            </View>
+
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Sexo</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite o nome do pet"
+                value={pet.sex}
+                onChangeText={(text) => setPet({ ...pet, sex: text })}
+                keyboardType="text"
+                autoCapitalize="words"
+              />
+            </View>
                   
-                  <Text style={styles.label}>Castrado:</Text>
-                  <Switch 
-                      value={pet.neutered} 
-                      onValueChange={(value) => setPet({ ...pet, neutered: value })}
-                      trackColor={{ false: colors.gray, true: colors.green }}
-                      thumbColor={pet.neutered ? colors.white : colors.lightGray}
-                  />
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Castrado: </Text>
+              <Switch style={styles.switchContainer}
+                  value={pet.neutered} 
+                  onValueChange={(value) => setPet({ ...pet, neutered: value })}
+                  trackColor={{ false: colors.gray, true: colors.green }}
+                  thumbColor={pet.neutered ? colors.white : colors.lightGray}
+              />
+            </View>
 
-                  <Text style={styles.label}>Sobre:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.about}
-                      onChangeText={(text) => setPet({ ...pet, about: text })}
-                      multiline
-                      numberOfLines={4}
-                  />
-                  <Text style={styles.label}>Local atual:</Text>
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.address?.neighborhood}
-                      onChangeText={(text) => setPet({ ...pet, address: { ...pet.address, neighborhood: text } })}
-                  />
-                  <TextInput 
-                      style={styles.input}
-                      value={pet.address?.city}
-                      onChangeText={(text) => setPet({ ...pet, address: { ...pet.address, city: text } })}
-                  />
-              </View>
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Sobre</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite uma descrição para o pet"
+                value={pet.about}
+                onChangeText={(text) => setPet({ ...pet, about: text })}
+                keyboardType="text"
+                autoCapitalize="words"
+              />
+            </View>
+            
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Cidade</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite a cidade em que o pet se encontra"
+                value={pet.address.city}
+                onChangeText={(text) => setPet({ ...pet, address: { ...pet.address, city: text } })}
+                keyboardType="text"
+                autoCapitalize="none"
+              />
+            </View>
 
+            <View style={commonStyles.inputContainer}>
+            <Text style={commonStyles.label}>Bairro</Text>
+              <TextInput
+                style={[commonStyles.input]}
+                placeholder="Digite o bairro em que o pet se encontra"
+                value={pet.address.neighborhood}
+                onChangeText={(text) => setPet({ ...pet, address: { ...pet.address, neighborhood: text } })}
+                keyboardType="text"
+                autoCapitalize="none"
+              />
+            </View>
+                  
               <Text style={styles.label}>Imagens:</Text>
               <View style={styles.picturesContainer}>
                   {pet.pictures.map((picture, index) => (
@@ -231,7 +263,7 @@ export default function EditPet() {
 
               <BlackButton text={'Salvar'} onPress={handleUpdatePet} loading={loading} disabled={loading} />
 
-              <BlackButton text={'Deleter pet'} onPress={handleDeletePet} loading={loading} disabled={loading} />
+              <BlackButton text={'Deletar pet'} onPress={handleDeletePet} loading={loading} disabled={loading} />
 
           </ScrollView> 
       </SafeAreaView>

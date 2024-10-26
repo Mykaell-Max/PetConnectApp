@@ -160,7 +160,7 @@ export default function EditUserProfile() {
   }
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.viewSafe}>
     <ScrollView >
       <Text style={styles.headerText}>Editar Perfil</Text>
 

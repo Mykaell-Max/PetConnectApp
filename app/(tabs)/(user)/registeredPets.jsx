@@ -53,7 +53,7 @@ export default function RegisteredPets() {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={commonStyles.viewSafe}>
             <Text style={commonStyles.BigText}>Seus animais registrados:</Text>
             <PetList pets={pets} />
             <BlackButton text={"Registrar novo pet"} onPress={goToPetRegister}/>

@@ -47,7 +47,7 @@ export default function adoptionRequests() {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={commonStyles.viewSafe}>
             <Text style={commonStyles.BigText}>Suas solicitações de adoção:</Text>
             <PetList pets={pets} />
         </SafeAreaView>
